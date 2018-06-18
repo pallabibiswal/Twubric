@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+    <div id="container">
+    <div id="list">
+        <ul>
+            {% for user in contents %}
+                <li><a href="/app/follower/{{ user.id }}/twubric.json">{{ user.id }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
