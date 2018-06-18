@@ -3,8 +3,13 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
-            <div id="login">
-                <a href="{{ url }}">Login</a>
+            <div id="login" style="text-align:center;display:block;">
+                <h2>Welcome To Twrubic!!</h2>
+                <a href="{{ url }}" id="twitter-login">
+                    <img src="{{ asset('apple-touch-icon.png') }}" id="login-button" alt="twitter-login" height="100" width="400">
+                </a>
             </div>
+        </div>
+    </div>
 
 {% endblock %}

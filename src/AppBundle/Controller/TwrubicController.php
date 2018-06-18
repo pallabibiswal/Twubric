@@ -2,37 +2,35 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\TwrubicService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Abraham\TwitterOAuth\TwitterOAuth;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class DefaultController extends Controller
+class TwrubicController extends Controller
 {
-
     /**
-     * @Route("/", name="homepage")
+     * Home Page redirect to the app route
+     * @Route("/", name="home_page")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $connection = new TwitterOAuth(
-            'iDj1Kd5xZB4dmTuKbJCxRrxDI',
-            'Le7uZhNTjUpTNu3C2tRbLioQdejK6hcjsFlMiqCpD9dxPrrkq2'
-//            '4919593574-czTwto2iW2dUD9m3cr2imlH7btiOOAF9dwhJAsf',
-//            '3o1ibBRbvGw8USD3KxFVQDVIKhtdOZnUFAIPIQhaWkOFS'
+        return $this->redirect("/app");
+    }
+    /**
+     * Home Page with twitter Login
+     * @Route("/app", name="app_page")
+     */
+    public function appHomePage()
+    {
+        $twitter = new TwrubicService();
+        $url = $twitter->twitterAuth();
+        return $this->render("Twrubic/login.html.twig",
+            array(
+                'url' => $url
+            )
         );
-
-        $request_token = $connection->oauth(
-            'oauth/request_token',
-            array('oauth_callback' => 'http://localhost:8000/app/followers')
-        );
-
-        $url = $connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
-        return $this->render("default/index.html.twig", array(
-            'url' => $url
-        ));
     }
 
     /**
@@ -40,24 +38,21 @@ class DefaultController extends Controller
      */
     public function showList()
     {
-        $connection = new TwitterOAuth(
-            'iDj1Kd5xZB4dmTuKbJCxRrxDI',
-            'Le7uZhNTjUpTNu3C2tRbLioQdejK6hcjsFlMiqCpD9dxPrrkq2',
-            '4919593574-czTwto2iW2dUD9m3cr2imlH7btiOOAF9dwhJAsf',
-            '3o1ibBRbvGw8USD3KxFVQDVIKhtdOZnUFAIPIQhaWkOFS'
-        );
-        $content = $connection->get("followers/list", ["cursor" => "-1"]);
-        $data = json_encode($content);
-        $arr = json_decode($data, true);
-        $users = $arr['users'];
-//        echo '<pre>';
-//        print_r($arr['users']);
-//        exit;
+        return $this->redirect("/app/follower");
+    }
+
+    /**
+     * @Route("/app/follower", name="list_followers_page")
+     */
+    public function showFollersList()
+    {
+        $twitter = new TwrubicService();
+        $followers = $twitter->getFollowersList();
 
         return $this->render(
-            'default/followers.html.twig',
+            'Twrubic/followers.html.twig',
             array(
-                'contents' =>  $users
+                'contents' =>  $followers
             )
         );
     }
@@ -68,22 +63,13 @@ class DefaultController extends Controller
      */
     public function show($id)
     {
-        $connection = new TwitterOAuth(
-            'iDj1Kd5xZB4dmTuKbJCxRrxDI',
-            'Le7uZhNTjUpTNu3C2tRbLioQdejK6hcjsFlMiqCpD9dxPrrkq2',
-            '4919593574-czTwto2iW2dUD9m3cr2imlH7btiOOAF9dwhJAsf',
-            '3o1ibBRbvGw8USD3KxFVQDVIKhtdOZnUFAIPIQhaWkOFS'
-        );
-        $content = $connection->get("followers/list", ["cursor" => "-1"]);
-        $data = json_encode($content);
-        $arr = json_decode($data, true);
-        $users = $arr['users'];
-
-
-        foreach($users as $user) {
-            if ($id == $user['id']) {
-                return new Response(json_encode($user));
-            }
-        }
+        $twitter = new TwrubicService();
+        $followers = $twitter->getFollowersList();
+        $user_detail = $twitter->getFollwerDeatils($followers, $id);
+        return $this->render("/Twrubic/json.html.twig",
+                array(
+                    'details' => json_encode($user_detail, JSON_PRETTY_PRINT)
+                )
+            );
     }
 }
