@@ -46,6 +46,7 @@ class TwrubicController extends Controller
     }
 
     /**
+     * redirect to show list of followers
      * @Route("/app/followers", name="list_page")
      */
     public function showList()
@@ -54,6 +55,7 @@ class TwrubicController extends Controller
     }
 
     /**
+     * Display Followers list
      * @Route("/app/follower", name="list_followers_page")
      * @return Response
      */
@@ -70,6 +72,7 @@ class TwrubicController extends Controller
     }
 
     /**
+     * Show json data with rubric values
      * @Route("/app/follower/{id}/twubric.json", name="show_page")
      * @param $id
      * @return Response

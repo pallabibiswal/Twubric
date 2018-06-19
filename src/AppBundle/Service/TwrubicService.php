@@ -5,7 +5,10 @@ namespace AppBundle\Service;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Psr\Container\ContainerInterface;
 
-
+/**
+ * Class TwrubicService
+ * @package AppBundle\Servicec
+ */
 class TwrubicService
 {
     protected $criteria = [];
@@ -71,6 +74,7 @@ class TwrubicService
     }
 
     /**
+     * Auth check
      * @return string
      * @throws \Abraham\TwitterOAuth\TwitterOAuthException
      */
@@ -95,6 +99,7 @@ class TwrubicService
     }
 
     /**
+     * Follower lists
      * @return mixed
      */
     public function getFollowersList()
@@ -114,6 +119,7 @@ class TwrubicService
     }
 
     /**
+     * Generate json to show followers data
      * @param $users
      * @param $id
      * @return array
@@ -145,6 +151,7 @@ class TwrubicService
             }
         }
 
+        //rubric calculation
         $rubic = $this->getCriteria($user_info);
         $follower_info['twubric'] = $rubic;
 
@@ -152,6 +159,7 @@ class TwrubicService
     }
 
     /**
+     * Function to get rubric data of user
      * @param $user
      * @return array
      */
@@ -175,6 +183,7 @@ class TwrubicService
     }
 
     /**
+     * Scaling the user data
      * @param $attribute
      * @param $criteria
      * @return float|string
@@ -203,6 +212,7 @@ class TwrubicService
     }
 
     /**
+     * attributes to scale user data
      * @param $user
      * @param $criteria
      * @return array
