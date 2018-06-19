@@ -16,11 +16,11 @@
 - go to the clonned folder and run below command
     - composer install --no-dev --optimize-autoloader
 - while installing you will be asked to provide some informations out of which you must provide informations for these:
-	--consumer_key:
-	--consumer_secret:
-	--access_key:
-	--access_secret:
-	--oauth_callback:
+	-consumer_key:
+	-consumer_secret:
+	-access_key:
+	-access_secret:
+	-oauth_callback:
 - These informations are needed for Authentication process.
 - now check your application
 	- php bin\console
