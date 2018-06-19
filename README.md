@@ -25,7 +25,9 @@
 - now check your application
 	- php bin\console
 - if all okay then run below commands
-    - bin/console cache:clear OR php bin/console cache:clear
-- php bin/console cache:clear --env=prod --no-debug
+    - php bin/console cache:clear
 - Symfony will create a server ,default port is 8000
 - run application in browser as : localhost:8000
+
+# NOTE
+- You can create a virtual host to access this application. According to your domain name you need to update oauth_callback url in twitter application.
