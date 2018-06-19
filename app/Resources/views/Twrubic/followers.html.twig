@@ -1,14 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-    <div id="container">
-    <div id="list">
-        <ul>
-            {% for user in contents %}
-                <li><a href="/app/follower/{{ user.id }}/twubric.json">{{ user.id }}</a></li>
-            {% endfor %}
-        </ul>
+    <div class="container py-5">
+        <div class="row">
+            <nav class="navbar navbar-light bg-light col-md-12">
+                <div class="col-md-10">
+                    <h1 class="font-italic">....Your Followers....</h1>
+                </div>
+                <div class="col-md-2">
+                    <a class="navbar-brand" href="{{ asset("/app") }}">Logout</a>
+                </div>
+            </nav>
+        </div>
+        <div class="row py-2">
+            <div class="col-md-12">
+                <div id="list">
+                    <ul class="list-unstyled">
+                        {% for user in contents %}
+                            <li class="media">
+                                <img class="mr-3 ml-10" src="{{ user.profile_image_url }}" alt="Generic placeholder image">
+                                <div class="media-body">
+                                    <h3 class="mt-0 mb-1">{{ user.name }}</h3>
+                                    <h5>Screen Name : {{ user.screen_name }}</h5>
+                                    <h4>Click on User Id to Check User's Details  !!</h4>
+                                    <a href="/app/follower/{{ user.id }}/twubric.json">{{ user.id }}</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-
 {% endblock %}
