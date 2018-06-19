@@ -59,12 +59,12 @@ class TwrubicController extends Controller
      */
     public function showFollersList()
     {
-        $this->twitter->followers = $this->twitter->getFollowersList();
+        $followers = $this->twitter->getFollowersList();
 
         return $this->render(
             'Twrubic/followers.html.twig',
             array(
-                'contents' =>  $this->twitter->followers
+                'contents' =>  $followers
             )
         );
     }
