@@ -55,19 +55,19 @@ class TwrubicService
         $this->scale = [
             'High' => [
                 'up' => 'infinity',
-                'low'=> 1000,
+                'low' => 1000,
                 'per' => 100
             ],
 
             'Average' => [
                 'up' => 1000,
-                'low'=> 500,
+                'low' => 500,
                 'per' => 75
             ],
 
             'Low' => [
                 'up' => 500,
-                'low'=> 100,
+                'low' => 100,
                 'per' => 50
             ],
         ];
@@ -126,7 +126,9 @@ class TwrubicService
      */
     public function getFollwerDeatils($users, $id)
     {
-
+        if (empty($users) || empty($id)) {
+            return FALSE;
+        }
         $follower_info = [];
         $user_info = [];
         $info = array(
@@ -140,13 +142,13 @@ class TwrubicService
             "favourites_count",
             "statuses_count"
         );
-        foreach($users as $user) {
-            if($id == $user['id']) {
+        foreach ($users as $user) {
+            if ($id == $user['id']) {
                 $user_info = $user;
             }
         }
         if (count($user_info) > 0) {
-            foreach($info as $key){
+            foreach ($info as $key) {
                 $follower_info[$key] = $user_info[$key];
             }
         }
@@ -165,6 +167,9 @@ class TwrubicService
      */
     public function getCriteria($user)
     {
+        if (empty($user)) {
+            return FALSE;
+        }
         $friends = $this->getScaleAttribute($user, 'Friends');
         $friends_wieght = $this->getScaleWeight($friends, 'Friends');
         $influence = $this->getScaleAttribute($user, 'Influence');
@@ -190,6 +195,9 @@ class TwrubicService
      */
     public function getScaleWeight($attribute, $criteria)
     {
+        if (empty($attribute) || empty($criteria)) {
+            return FALSE;
+        }
         $weight = '';
         $sum = '';
         if (array_key_exists($criteria, $this->criteria)) {
@@ -219,9 +227,12 @@ class TwrubicService
      */
     public function getScaleAttribute($user, $criteria)
     {
+        if (empty($user) || empty($criteria)) {
+            return FALSE;
+        }
         $attributes = [];
         if (array_key_exists($criteria, $this->attribute)) {
-            foreach($this->attribute[$criteria] as $attr) {
+            foreach ($this->attribute[$criteria] as $attr) {
                 array_push($attributes, $user[$attr]);
             }
         }
