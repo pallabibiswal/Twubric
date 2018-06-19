@@ -3,15 +3,31 @@
 namespace AppBundle\Service;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Psr\Container\ContainerInterface;
+
 
 class TwrubicService
 {
     protected $criteria = [];
     protected $scale = [];
     protected $attribute = [];
+    protected $consumer;
+    protected $consumer_key;
+    protected $access;
+    protected $access_key;
+    protected $call_back;
 
-    public function __construct()
+    /**
+     * TwrubicService constructor.
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
+        $this->consumer = $container->getParameter('consumer_key');
+        $this->consumer_key = $container->getParameter('consumer_secret');
+        $this->access = $container->getParameter('access_key');
+        $this->access_key = $container->getParameter('access_secret');
+        $this->call_back = $container->getParameter('oauth_callback');
         $this->criteria = [
             'Friends' => 2,
             'Influence' => 4,
@@ -61,13 +77,13 @@ class TwrubicService
     public function twitterAuth()
     {
         $connection = new TwitterOAuth(
-            'iDj1Kd5xZB4dmTuKbJCxRrxDI',
-            'Le7uZhNTjUpTNu3C2tRbLioQdejK6hcjsFlMiqCpD9dxPrrkq2'
+            $this->consumer,
+            $this->consumer_key
         );
 
         $request_token = $connection->oauth(
             'oauth/request_token',
-            array('oauth_callback' => 'http://localhost:8000/app/followers')
+            array('oauth_callback' => $this->call_back)
         );
 
         $url = $connection->url(
@@ -84,10 +100,10 @@ class TwrubicService
     public function getFollowersList()
     {
         $connection = new TwitterOAuth(
-            'iDj1Kd5xZB4dmTuKbJCxRrxDI',
-            'Le7uZhNTjUpTNu3C2tRbLioQdejK6hcjsFlMiqCpD9dxPrrkq2',
-            '4919593574-czTwto2iW2dUD9m3cr2imlH7btiOOAF9dwhJAsf',
-            '3o1ibBRbvGw8USD3KxFVQDVIKhtdOZnUFAIPIQhaWkOFS'
+            $this->consumer,
+            $this->consumer_key,
+            $this->access,
+            $this->access_key
         );
         $content = $connection->get("followers/list", ["cursor" => "-1"]);
         $data = json_encode($content);

@@ -79,9 +79,9 @@ class TwrubicController extends Controller
         $followers = $this->twitter->getFollowersList();
         $user_detail = $this->twitter->getFollwerDeatils($followers, $id);
         return $this->render("/Twrubic/json.html.twig",
-                array(
-                    'details' => json_encode($user_detail, JSON_PRETTY_PRINT)
-                )
-            );
+            array(
+                'details' => json_encode($user_detail, JSON_PRETTY_PRINT)
+            )
+        );
     }
 }
